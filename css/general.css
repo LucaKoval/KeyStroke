@@ -1,0 +1,529 @@
+/* Non-IE so far, need url("path/to/file.eot); */
+@font-face {
+    font-family: "Aileron-Light";
+    src: url("../fonts/aileron/Aileron-Light.otf");
+}
+
+@font-face {
+    font-family: "Aileron-Regular";
+    src: url("../fonts/aileron/Aileron-Regular.otf");
+}
+
+/* Copyright notice for the use of the font "Pacifico":
+Designer
+Vernon Adams
+
+Copyright (c) 2011 by Vernon Adams. All rights reserved.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+
+This license is copied below, and is also available with a FAQ at: http://scripts.sil.org/OFL
+
+SIL OPEN FONT LICENSE
+
+Version 1.1 - 26 February 2007
+
+PREAMBLE 
+The goals of the Open Font License (OFL) are to stimulate worldwide development of collaborative font projects, to support the font creation efforts of academic and linguistic communities, and to provide a free and open framework in which fonts may be shared and improved in partnership with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and redistributed freely as long as they are not sold by themselves. The fonts, including any derivative works, can be bundled, embedded, redistributed and/or sold with any software provided that any reserved names are not used by derivative works. The fonts and derivatives, however, cannot be released under any other type of license. The requirement for fonts to remain under this license does not apply to any document created using the fonts or their derivatives.
+
+DEFINITIONS 
+"Font Software" refers to the set of files released by the Copyright Holder(s) under this license and clearly marked as such. This may include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting, or substituting â€” in part or in whole â€” any of the components of the Original Version, by changing formats or by porting the Font Software to a new environment.
+
+"Author" refers to any designer, engineer, programmer, technical writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS 
+Permission is hereby granted, free of charge, to any person obtaining a copy of the Font Software, to use, study, copy, merge, embed, modify, redistribute, and sell modified and unmodified copies of the Font Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components, in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled, redistributed and/or sold with any software, provided that each copy contains the above copyright notice and this license. These can be included either as stand-alone text files, human-readable headers or in the appropriate machine-readable metadata fields within text or binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font Name(s) unless explicit written permission is granted by the corresponding Copyright Holder. This restriction only applies to the primary font name as presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font Software shall not be used to promote, endorse or advertise any Modified Version, except to acknowledge the contribution(s) of the Copyright Holder(s) and the Author(s) or with their explicit written permission.
+
+5) The Font Software, modified or unmodified, in part or in whole, must be distributed entirely under this license, and must not be distributed under any other license. The requirement for fonts to remain under this license does not apply to any document created using the Font Software.
+
+TERMINATION 
+This license becomes null and void if any of the above conditions are not met.
+
+DISCLAIMER 
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE.
+*/
+
+/* Copyright notice for the use of the font "Jaldi":
+Designers
+Pablo Cosgaya
+Nicolas Silva
+
+Copyright (c) 2011-2015, Omnibus-Type (www.omnibus-type.com omnibus.type@gmail.com)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+
+This license is copied below, and is also available with a FAQ at: http://scripts.sil.org/OFL
+
+SIL OPEN FONT LICENSE
+
+Version 1.1 - 26 February 2007
+
+PREAMBLE 
+The goals of the Open Font License (OFL) are to stimulate worldwide development of collaborative font projects, to support the font creation efforts of academic and linguistic communities, and to provide a free and open framework in which fonts may be shared and improved in partnership with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and redistributed freely as long as they are not sold by themselves. The fonts, including any derivative works, can be bundled, embedded, redistributed and/or sold with any software provided that any reserved names are not used by derivative works. The fonts and derivatives, however, cannot be released under any other type of license. The requirement for fonts to remain under this license does not apply to any document created using the fonts or their derivatives.
+
+DEFINITIONS 
+"Font Software" refers to the set of files released by the Copyright Holder(s) under this license and clearly marked as such. This may include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting, or substituting â€” in part or in whole â€” any of the components of the Original Version, by changing formats or by porting the Font Software to a new environment.
+
+"Author" refers to any designer, engineer, programmer, technical writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS 
+Permission is hereby granted, free of charge, to any person obtaining a copy of the Font Software, to use, study, copy, merge, embed, modify, redistribute, and sell modified and unmodified copies of the Font Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components, in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled, redistributed and/or sold with any software, provided that each copy contains the above copyright notice and this license. These can be included either as stand-alone text files, human-readable headers or in the appropriate machine-readable metadata fields within text or binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font Name(s) unless explicit written permission is granted by the corresponding Copyright Holder. This restriction only applies to the primary font name as presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font Software shall not be used to promote, endorse or advertise any Modified Version, except to acknowledge the contribution(s) of the Copyright Holder(s) and the Author(s) or with their explicit written permission.
+
+5) The Font Software, modified or unmodified, in part or in whole, must be distributed entirely under this license, and must not be distributed under any other license. The requirement for fonts to remain under this license does not apply to any document created using the Font Software.
+
+TERMINATION 
+This license becomes null and void if any of the above conditions are not met.
+
+DISCLAIMER 
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM OTHER DEALINGS IN THE FONT SOFTWARE.
+*/
+
+/*Copyright notice for the use of the font "Work-Sans":
+
+Copyright (c) 2014-2015 Wei Huang (wweeiihhuuaanngg@gmail.com)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+
+SIL Open Font License v1.1
+====================================================
+
+
+Preamble
+----------
+
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+
+Definitions
+-------------
+
+`"Font Software"` refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+`"Reserved Font Name"` refers to any names specified as such after the
+copyright statement(s).
+
+`"Original Version"` refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+`"Modified Version"` refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+`"Author"` refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+
+Permission & Conditions
+------------------------
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1. Neither the Font Software nor any of its individual components,
+   in Original or Modified Versions, may be sold by itself.
+
+2. Original or Modified Versions of the Font Software may be bundled,
+   redistributed and/or sold with any software, provided that each copy
+   contains the above copyright notice and this license. These can be
+   included either as stand-alone text files, human-readable headers or
+   in the appropriate machine-readable metadata fields within text or
+   binary files as long as those fields can be easily viewed by the user.
+
+3. No Modified Version of the Font Software may use the Reserved Font
+   Name(s) unless explicit written permission is granted by the corresponding
+   Copyright Holder. This restriction only applies to the primary font name as
+   presented to the users.
+
+4. The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+   Software shall not be used to promote, endorse or advertise any
+   Modified Version, except to acknowledge the contribution(s) of the
+   Copyright Holder(s) and the Author(s) or with their explicit written
+   permission.
+
+5. The Font Software, modified or unmodified, in part or in whole,
+   must be distributed entirely under this license, and must not be
+   distributed under any other license. The requirement for fonts to
+   remain under this license does not apply to any document created
+   using the Font Software.
+
+
+Termination
+-----------
+
+This license becomes null and void if any of the above conditions are
+not met.
+
+
+    DISCLAIMER
+    
+    THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+    OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+    COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+    INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+    DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+    FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+    OTHER DEALINGS IN THE FONT SOFTWARE.
+
+*/
+
+* {
+    font-family: 'Work Sans', sans-serif;
+    box-sizing: inherit;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+*:before, *:after {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    height: 100%;
+    margin: 0px;
+}
+
+body {
+    background: #ecf0f1;
+    height: 100%;
+    margin: 0;
+}
+
+.wrapper {
+    flex: 1 0 auto;
+}
+
+nav {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    width: 100%;
+    background: white;
+    justify-content: space-between;
+    align-items: center;
+    height: 64px;
+}
+
+.nav-left {
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.nav-right {
+    justify-content: flex-end;
+}
+
+.nav-left, .nav-right {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+}
+
+.nav-right .nav-item {
+    display: inline;
+}
+
+nav .menu-icon {
+    display: none;
+    width: 40px;
+    height: 40px;
+    z-index: 1001;
+    color: #575554;
+    font-size: 2.25em;
+}
+
+.nav-item a {
+    text-decoration: none;
+    font-size: 1.1em;
+    display: inline-block;
+    padding: 1.2em;
+    color: #575554;
+}
+
+#navRight a {
+    position: relative;
+}
+
+#navRight a:before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -2px;
+    left: 0;
+    background-color: #ff793f;
+    visibility: hidden;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.3s ease-in-out 0s;
+    transition: all 0.3s ease-in-out 0s;
+}
+
+#navRight a:hover:before {
+    visibility: visible;
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+}
+
+.nav-right input[type=text] {
+    font-size: 1.1em;
+    border: none;
+    border-radius: 4px;
+    width: 256px;
+    background: #ecf0f1;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    margin-right: 4px;
+    padding-left: 1em;
+
+    -webkit-transition: all 0.15s ease-in-out 0s;
+    -moz-transition: all 0.15s ease-in-out 0s;
+    -ms-transition: all 0.15s ease-in-out 0s;
+    transition: all 0.15s ease-in-out 0s;
+}
+
+.nav-right input[type=text]:focus {
+    outline: none;
+}
+
+.nav-right input[type=text]:hover {
+    /*border: 2px solid #ffa801;*/
+    -webkit-box-shadow: inset 0 0 0 2px #cacccd;
+    -moz-box-shadow: inset 0 0 0 2px #cacccd;
+    -ms-box-shadow: inset 0 0 0 2px #cacccd;
+    box-shadow: inset 0 0 0 2px #cacccd;
+}
+
+.nav-right input[type=text]:focus {
+    /*border: 4px solid #ffa801;*/
+    -webkit-box-shadow: inset 0 0 0 2px #ff793f;
+    -moz-box-shadow: inset 0 0 0 2px #ff793f;
+    -ms-box-shadow: inset 0 0 0 2px #ff793f;
+    box-shadow: inset 0 0 0 2px #ff793f;
+}
+
+.errorBorder {
+    -webkit-box-shadow: inset 0 0 0 2px #e84118 !important;
+    -moz-box-shadow: inset 0 0 0 2px #e84118 !important;
+    -ms-box-shadow: inset 0 0 0 2px #e84118 !important;
+    box-shadow: inset 0 0 0 2px #e84118 !important;
+}
+
+.nav-right input[type=text]::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #575554;
+    font-size: 1em;
+}
+
+.nav-right input[type=text]::-moz-placeholder { /* Firefox 19+ */
+    color: #575554;
+    font-size: 1em;
+}
+
+.nav-right input[type=text]:-ms-input-placeholder { /* IE 10+ */
+    color: #575554;
+    font-size: 1em;
+}
+
+.nav-right input[type=text]:-moz-placeholder { /* Firefox 18- */
+    color: #575554;
+    font-size: 1em;
+}
+
+.logo a svg {
+    stroke: #ff793f;
+    stroke-width: 1px;
+    stroke-dashoffset: -900;
+    stroke-dasharray: 0;
+}
+
+.logo a svg:hover {
+    animation: dash 5.0s ease-in-out;
+}
+
+@keyframes dash {
+    0% {
+        stroke-dasharray: 900;
+    }
+    100% {
+        stroke-dasharray: 0;
+    }
+}
+
+.logo a svg text {
+    font-family: 'Pacifico';
+    font-weight: 100;
+    font-size: 2em;
+    fill: #ff793f;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    
+}
+
+.logo a svg text:hover {
+    animation: fillAnimation 2.0s ease-in-out;
+}
+
+@keyframes fillAnimation {
+    0% {
+        fill: #FFF;
+    }
+    100% {
+        fill: #ff793f;
+    }
+}
+
+#noVertPadding {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+
+
+
+
+
+@media screen and (max-width:1281px) { /* hi-res laptops and desktops */
+    #featuredContentContainer {
+        flex-direction: column;
+    }
+
+    #recommendedContentContainer, #hotContentContainer {
+        flex: none;
+    }
+}
+
+@media screen and (max-width:1025px) { /* big landscape tablets, laptops, and desktops */
+    
+}
+
+@media screen and (max-width:961px)  { /* tablet, landscape iPad, lo-res laptops ands desktops */
+    nav {
+        align-items: flex-start;
+    }
+
+    .nav-right-container {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .nav-right {
+        display: none;
+        flex-direction: column;
+        padding: 4px;
+        background: #fff;
+        border-radius: 0px 0px 6px 6px;
+        border-top: 2px solid #ecf0f1;
+        position: absolute;
+        width: 100%;
+        left: 0;
+        -webkit-transition: top 0.35s ease-out;
+        -moz-transition: top 0.35s ease-out;
+        -o-transition: top 0.35s ease-out;
+        transition: top 0.35s ease-out;
+    }
+
+    nav .menu-icon {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        align-self: flex-end;
+        height: 100%;
+    }
+
+    nav .menu-icon i {
+        width: 100%;
+    }
+    
+    .nav-right li {
+        text-align: center;
+        width: 100%;
+        margin: 0;
+    }
+
+    .nav-right input[type=text] {
+        padding: 1em;
+        margin: 6px 0 0 0;
+        z-index: 1002;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width:641px) { /* portrait tablets, portrait iPad, landscape e-readers, landscape 800x480 or 854x480 phones */
+    
+}
+
+@media screen and (max-width:481px) { /* portrait e-readers (Nook/Kindle), smaller tablets @ 600 or @ 640 wide. */
+
+}
+
+@media screen and (max-width:320px) { /* smartphones, iPhone, portrait 480x320 phones */
+
+}

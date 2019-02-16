@@ -1,0 +1,12 @@
+.body-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.row {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    margin: 0 -2px -2px 0;
+}
