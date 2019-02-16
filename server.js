@@ -5,45 +5,37 @@ const app = express()
 let body = ''
 
 app.set('view engine', 'ejs')
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 
 /* For actually displaying the pages, including when you click on the navbar links. */
 app.get('/index', function (req, res) {
     console.log('they want the GET: index')
-
-    var sports = [
-        { name: 'Football', difficulty: 3 },
-        { name: 'Soccer', difficulty: 5 },
-        { name: 'Curling', difficulty: 10 }
-    ];
-    var tagline = "When you herp, you derp.";
-
-    res.render('pages/index', {
-        sports: sports,
-        tagline: tagline
-    })
+    // res.render('pages/index', { body: body })
+    res.render('pages/index', { msg: null })
 })
 
 app.get('/data', function (req, res) {
     console.log('they want the GET: data')
-    res.render('pages/data')
+    res.render('pages/data', { msg: body })
 })
 
 app.get('/visuals', function (req, res) {
     console.log('they want the GET: visuals')
-    res.render('pages/visuals')
+    res.render('pages/visuals', { msg: body })
 })
 
+/* Handle post requests */
 app.post('/', function (req, res) {
-
+    res.render('pages/index', { msg: req.body.msg })
     console.log('they want the POST')
-    req.on('data', function(data) {
-        body += data.toString()
-    })
+    // req.on('data', function(data) {
+    //     body += data.toString()
+    // })
 
-    console.log('body: ' + body)
+    console.log('msg: ' + req.body.msg)
 
-    res.render('pages/index', {body: body})
+    
 })
 
 app.listen(8000, function () {

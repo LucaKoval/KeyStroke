@@ -24,16 +24,8 @@
 
     <div class="container">
         <h1>Welcome to Fitbit (TM) for piano! EJS!</h1>
-        <p><%= tagline %></p>
+        <p>It's <%= msg %></p>
     </div>
-
-    <h2>Loop</h2>
-
-    <ul>
-        <% sports.forEach(function(sport) { %>
-            <li><%= sport.name %> - <%= sport.difficulty %></li>
-        <% }); %>
-    </ul>
 
     <script src="js/index.js"></script>
     <script src="js/general.js"></script>
