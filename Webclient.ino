@@ -59,13 +59,14 @@ void loop() {
   HTTPClient http;
 
   http.begin("http://10.148.8.186:8000");
-  http.addHeader("Content-Type", "text/plain");
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
 
-  int httpCode = http.POST("Hey Luca");
+//  int httpCode = http.POST("msg='HelloLuca'");
+http.POST("msg=5");
   String payload = http.getString();
 
   Serial.println();
-  Serial.println(httpCode);
+//  Serial.println(httpCode);
   Serial.println(payload);
 
   http.end();
