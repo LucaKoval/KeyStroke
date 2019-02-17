@@ -28,16 +28,17 @@ app.get('/visuals', function (req, res) {
 
 /* Handle post requests */
 app.post('/', function (req, res) {
-    console.log('they want the POST')
-    console.log('keyPressed: ' + req.body.keyPressed)
+    // console.log('they want the POST')
+    // console.log('keyPressed: ' + req.body.keyPressed)
     keyPressed = req.body.keyPressed
     res.send(req.body)
 })
 
 app.post('/update', function(req, res) {
+    console.log('they want the POST from update')
+    console.log('keyPressed: ' + keyPressed)
     res.send(keyPressed)
 })
-
 
 app.listen(8000, function () {
     console.log('Example app listening on port 8000!')
