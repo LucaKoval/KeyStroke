@@ -5,7 +5,6 @@ const app = express()
 
 let keyPressed = ''
 let keyDuration = ''
-let tempo = ''
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -32,10 +31,9 @@ app.post('/', function (req, res) {
     // console.log('they want the POST')
     // console.log('body: ' + JSON.stringify(req.body))
     // console.log('keyPressed: ' + req.body.keyPressed + ', keyDuration: ' + req.body.keyDuration + ', tempo: ' + req.body.tempo)
-    console.log('body: ' + JSON.stringify(req.body) + ', keyPressed: ' + req.body.keyPressed + ', keyDuration: ' + req.body.keyDuration)
+    console.log('keyPressed: ' + req.body.keyPressed + ', keyDuration: ' + req.body.keyDuration)
     keyPressed = req.body.keyPressed
     keyDuration = req.body.keyDuration
-    tempo = req.body.tempo
     res.send(req.body)
 })
 
@@ -44,7 +42,7 @@ app.post('/update', function(req, res) {
     // console.log('keyPressed: ' + keyPressed)
     // console.log('keyDuration: ' + keyDuration)
     // console.log('tempo: ' + tempo)
-    res.send({keyPressed: keyPressed, keyDuration: keyDuration, tempo: tempo})
+    res.send({keyPressed: keyPressed, keyDuration: keyDuration})
 })
 
 app.listen(8000, function () {
