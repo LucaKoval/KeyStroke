@@ -21,10 +21,10 @@ var soundsPlaneMaterialTemplate = new THREE.MeshBasicMaterial({
 
 var time = 0;
 var mapUpdateTime = 0;
-var heightMapDim = 100;
+var heightMapDim = 150;
 var heightMap = zeros([heightMapDim, heightMapDim]);
-var heightMax = 0;
-var minHeight = 1;
+var heightMax = 100;
+var minHeight = 0.001;
 
 var soundsPlaneColors = zeros([heightMapDim, heightMapDim]);
 
@@ -277,7 +277,6 @@ function requestData() {
                         }
                     }
                 });
-                
             }
         },
         error: function (err) {
@@ -306,8 +305,6 @@ function updateMesh(time) {
         }
     }
 
-    heightMax = twoDMax(heightMap)
-
     soundsPlaneGeometry = new THREE.PlaneGeometry(1000, 1000, heightMapDim - 1, heightMapDim - 1);
 
     for (var i = 0; i < soundsPlaneGeometry.vertices.length; i++) {
@@ -318,9 +315,15 @@ function updateMesh(time) {
 
     for (var i = 0; i < soundsPlaneGeometry.faces.length; i++) {
         var face = soundsPlaneGeometry.faces[i];
-        face.vertexColors[0] = Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight ? new THREE.Color("hsl(29, 100, " + 100*Math.abs(soundsPlaneGeometry.vertices[face.a].z)/heightMax + ")") : new THREE.Color(0xffffff)
-        face.vertexColors[1] = Math.abs(soundsPlaneGeometry.vertices[face.b].z) >= minHeight ? new THREE.Color("hsl(29, 100, " + 100*Math.abs(soundsPlaneGeometry.vertices[face.b].z)/heightMax + ")") : new THREE.Color(0xffffff)
-        face.vertexColors[2] = Math.abs(soundsPlaneGeometry.vertices[face.c].z) >= minHeight ? new THREE.Color("hsl(29, 100, " + 100*Math.abs(soundsPlaneGeometry.vertices[face.c].z)/heightMax + ")") : new THREE.Color(0xffffff)
+        face.vertexColors[0] = Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight ? new THREE.Color("hsl(29, 100%, " + Math.abs(soundsPlaneGeometry.vertices[face.a].z)*100/heightMax + "%)") : new THREE.Color(0xffffff)
+        // face.vertexColors[0] = Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight ? new THREE.Color("hsl(50, 100, 50)") : new THREE.Color(0xffffff)
+        // face.vertexColors[1] = Math.abs(soundsPlaneGeometry.vertices[face.b].z) >= minHeight ? new THREE.Color("hsl(50, 100, 50)") : new THREE.Color(0xffffff)
+        // face.vertexColors[2] = Math.abs(soundsPlaneGeometry.vertices[face.c].z) >= minHeight ? new THREE.Color("hsl(50, 100, 50)") : new THREE.Color(0xffffff)
+        face.vertexColors[1] = Math.abs(soundsPlaneGeometry.vertices[face.b].z) >= minHeight ? new THREE.Color("hsl(29, 100%, " + Math.abs(soundsPlaneGeometry.vertices[face.b].z)*100/heightMax + "%)") : new THREE.Color(0xffffff)
+        face.vertexColors[2] = Math.abs(soundsPlaneGeometry.vertices[face.c].z) >= minHeight ? new THREE.Color("hsl(29, 100%, " + Math.abs(soundsPlaneGeometry.vertices[face.c].z)*100/heightMax + "%)") : new THREE.Color(0xffffff)
+        // face.vertexColors[0] = new THREE.Color("hsl(29, 100%, 50%)")
+        // face.vertexColors[1] = new THREE.Color("hsl(50, 100%, 50%)")
+        // face.vertexColors[2] = new THREE.Color("hsl(50, 100%, 50%)")
     }
 
     soundsPlaneMaterial = soundsPlaneMaterialTemplate;
