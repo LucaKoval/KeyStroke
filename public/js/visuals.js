@@ -23,6 +23,7 @@ var time = 0;
 var mapUpdateTime = 0;
 var heightMapDim = 100;
 var heightMap = zeros([heightMapDim, heightMapDim]);
+var heightMax = 0;
 var minHeight = 1;
 
 var soundsPlaneColors = zeros([heightMapDim, heightMapDim]);
@@ -30,6 +31,11 @@ var soundsPlaneColors = zeros([heightMapDim, heightMapDim]);
 
 function randomInt(max) {
     return Math.floor(Math.random() * max);
+}
+
+function twoDMax(arr) {
+    var maxRow = arr.map(function(row){ return Math.max.apply(Math, row); });
+    return Math.max.apply(null, maxRow);
 }
 
 var sounds = [];
@@ -47,6 +53,7 @@ function createSound(x, y, amp) {
         updateAmp: function() {
             this.amp *= this.dampening;
             this.time += this.timeUpdate;
+            this.x -= this.timeUpdate;
         },
         checkExist: function() {
             if (this.amp <= minHeight) sounds.splice(sounds.indexOf(this), 1);
@@ -69,19 +76,18 @@ animate();
 
 function init() {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xcccccc);
-    // scene.fog = new THREE.FogExp2(0xcccccc, 0.0007);
+    scene.background = new THREE.Color(0xff793f);
+    scene.fog = new THREE.FogExp2(0xcccccc, 0.001);
 
     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 3000);
-    // camera.position.set(400, 200, 0);
-    camera.position.y = 200;
-    camera.position.z = 400;
+    camera.position.y = 300;
+    camera.position.x = 300;
 
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     renderer.autoClear = false;
-    $('.body-container > .data-container > .row').append(renderer.domElement);
+    $('.data-container > .row').append(renderer.domElement);
 
     var depthShader = THREE.BokehDepthShader;
 
@@ -91,12 +97,12 @@ function init() {
         fragmentShader: depthShader.fragmentShader
     });
 
-    materialDepth.uniforms[ 'mNear' ].value = camera.near;
-    materialDepth.uniforms[ 'mFar' ].value = camera.far;
+    materialDepth.uniforms['mNear'].value = camera.near;
+    materialDepth.uniforms['mFar'].value = camera.far;
 
     // Test sound
-    createSound(Math.floor(heightMapDim/2), Math.floor(heightMapDim/2), 100);
-    createSound(Math.floor(heightMapDim/4), Math.floor(heightMapDim/4), 100);
+    // createSound(Math.floor(heightMapDim/2), Math.floor(heightMapDim/2), 100);
+    // createSound(Math.floor(heightMapDim/4), Math.floor(heightMapDim/4), 100);
 
     // controls
     controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -118,10 +124,6 @@ function init() {
     scene.add(soundsPlane);
     soundsPlane.rotation.x = -Math.PI/2;
 
-    // var lightMain = new THREE.DirectionalLight(0xffffff, 2);
-    // lightMain.position.set(1, 1, 1);
-    // scene.add(lightMain);
-
     var directionalLight = new THREE.DirectionalLight( 0xffffff, 2 );
     directionalLight.position.set( 2, 1.2, 10 ).normalize();
     scene.add( directionalLight );
@@ -138,7 +140,7 @@ function init() {
         fstop: 2.2,
         maxblur: 0.5,
         showFocus: false,
-        focalDepth: 20,
+        focalDepth: 3000,
         manualdof: false,
         vignetting: true,
         depthblur: false,
@@ -146,7 +148,7 @@ function init() {
         gain: 2.0,
         bias: 0.5,
         fringe: 0.7,
-        focalLength: 20,
+        focalLength: 15,
         noise: true,
         pentagon: false,
         dithering: 0.0001
@@ -223,13 +225,18 @@ function requestData() {
         type: "POST",
         url: "http://localhost:8000/update",
         success: function (data) {
-            if (!(!data || data == '' || data == ' ')) {
-                var keys = data.split(' ');
-                keys.forEach(function(key) {
-                    if (parseInt(key)) {
-                        createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * parseInt(key)/KEY_DIVISIONS), 100);
-                    }
-                });
+            if (!(!data.keyPressed || data.keyPressed == '' || data.keyPressed == ' ')) {
+                // console.log(data.split(' '))
+                var keys = data.keyPressed.split(' ');
+                // console.log(keys)
+                // var keys = []
+                // if (data.split != undefined) {
+                    keys.forEach(function(key) {
+                        if (parseInt(key)) {
+                            createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * parseInt(key)/KEY_DIVISIONS), 100);
+                        }
+                    });
+                // }
             }
         },
         error: function (err) {
@@ -258,6 +265,8 @@ function updateMesh(time) {
         }
     }
 
+    heightMax = twoDMax(heightMap)
+
     soundsPlaneGeometry = new THREE.PlaneGeometry(1000, 1000, heightMapDim - 1, heightMapDim - 1);
 
     for (var i = 0; i < soundsPlaneGeometry.vertices.length; i++) {
@@ -268,9 +277,27 @@ function updateMesh(time) {
 
     for (var i = 0; i < soundsPlaneGeometry.faces.length; i++) {
         var face = soundsPlaneGeometry.faces[i];
-        face.vertexColors[0] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff);
-        face.vertexColors[1] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.b].z)/10 * 0xffffff);
-        face.vertexColors[2] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.c].z)/10 * 0xffffff);
+        // if (Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight) {
+        //     face.vertexColors[0] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff);
+        // } else {
+        //     console.log('under')
+        //     face.vertexColors[0] = new THREE.Color(0x000000);
+        // }
+        // var = Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight ? new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff) : vnew THREE.Color(0x000000)
+        // face.vertexColors[0] = Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight ? new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff) : new THREE.Color(0xffffff)
+        // console.log(Math.abs(100*soundsPlaneGeometry.vertices[face.a].z)/heightMax)
+        face.vertexColors[0] = Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight ? new THREE.Color("hsl(29, 100, " + 100*Math.abs(soundsPlaneGeometry.vertices[face.a].z)/heightMax + ")") : new THREE.Color(0xffffff)
+        // cps
+        // face.vertexColors[0] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff);
+        // face.vertexColors[1] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.b].z)/10 * 0xffffff);
+        // face.vertexColors[2] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.c].z)/10 * 0xffffff);
+        // face.vertexColors[1] = Math.abs(soundsPlaneGeometry.vertices[face.b].z) >= minHeight ? new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.b].z)/10 * 0xffffff) : new THREE.Color(0xffffff)
+        // face.vertexColors[2] = Math.abs(soundsPlaneGeometry.vertices[face.c].z) >= minHeight ? new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.c].z)/10 * 0xffffff) : new THREE.Color(0xffffff)
+        face.vertexColors[1] = Math.abs(soundsPlaneGeometry.vertices[face.b].z) >= minHeight ? new THREE.Color("hsl(29, 100, " + 100*Math.abs(soundsPlaneGeometry.vertices[face.b].z)/heightMax + ")") : new THREE.Color(0xffffff)
+        face.vertexColors[2] = Math.abs(soundsPlaneGeometry.vertices[face.c].z) >= minHeight ? new THREE.Color("hsl(29, 100, " + 100*Math.abs(soundsPlaneGeometry.vertices[face.c].z)/heightMax + ")") : new THREE.Color(0xffffff)
+        // face.vertexColors[0] = new THREE.Color(0xffffff);
+        // face.vertexColors[1] = new THREE.Color(0xffffff);
+        // face.vertexColors[2] = new THREE.Color(0xffffff);
     }
 
     soundsPlaneMaterial = soundsPlaneMaterialTemplate;
