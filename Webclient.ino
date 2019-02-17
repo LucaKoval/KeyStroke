@@ -1,10 +1,12 @@
 /*
  *  Simple HTTP get webclient test
  */
+
  
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <Wire.h>
+#include "pitches.h"
 
 const char* ssid     = "RedRover";
 const char* password = "";
@@ -39,7 +41,7 @@ void setup() {
 int value = 0;
  
 void loop() {
-  delay(5000);
+  //delay(500);
   ++value;
  
   Serial.print("connecting to ");
@@ -55,21 +57,6 @@ void loop() {
   else {
     Serial.println("connection success");
   }
-
-  HTTPClient http;
-
-  http.begin("http://10.148.8.186:8000");
-  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
-
-//  int httpCode = http.POST("msg='HelloLuca'");
-http.POST("msg=5");
-  String payload = http.getString();
-
-  Serial.println();
-//  Serial.println(httpCode);
-  Serial.println(payload);
-
-  http.end();
 
   Serial.println();
   Serial.println();
@@ -88,19 +75,59 @@ http.POST("msg=5");
 
   Serial.println(responseL);
 
-  int bytesFromKeys = 10;
+  int bytesFromKeys = 100;
   int keysDevice = 2;
   Wire.requestFrom(keysDevice, bytesFromKeys);
 
-  String responseK = "";
+  String keysPressed = "";
   while (Wire.available()) {
     char c = Wire.read();
-    responseK+=c;
+    if (isDigit(c) || isSpace(c)) keysPressed+=c;
   }
 
-  Serial.println(responseK);
+  String buttons="";
+  String freq="";
 
-  
+  boolean frequency = false;
+  for (int j=0; j<keysPressed.length(); j++) {
+
+      if (frequency) {
+        freq+=keysPressed[j];
+      }
+      else {
+        buttons+=keysPressed[j];
+      }
+      
+      if (keysPressed[j]==' ') {
+        if (frequency == false) {
+          frequency = true;
+          buttons+=" ";
+        }
+        else {
+          frequency = false;
+          freq+=" ";
+        }
+      }
+
+  }
+
+  HTTPClient http;
+
+  http.begin("http://10.148.8.186:8000");
+  http.addHeader("Content-Type", "application/x-www-form-urlencoded");
+
+http.POST("keyPressed="+freq+"&keyDurration="+buttons);
+  String payload = http.getString();
+
+//http.POST("keyDurration="+freq);
+  //payload = http.getString();
+
+
+  http.end();
+
+  Serial.println(buttons);
+  Serial.println(freq);
+
   Serial.println();
   Serial.println();
 }
