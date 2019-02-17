@@ -21,7 +21,8 @@ function zeros(dimensions) {
     return array;
 }
 
-var time, mapUpdateTime = 0;
+var time = 0;
+var mapUpdateTime = 0;
 var heightMapDim = 100;
 var heightMap = zeros([heightMapDim, heightMapDim]);
 
@@ -34,15 +35,19 @@ function createSound(x, y, amp) {
         x: x,
         y: y,
         amp: amp,
-        dampening: 0.95,
+        time: 0,
+        timeUpdate: 0.3,
+        dampening: 0.90,
         updateAmp: function() {
             this.amp *= this.dampening;
+            this.time += this.timeUpdate;
         },
         checkExist: function() {
             if (this.amp <= 0.0001) sounds.splice(sounds.indexOf(this), 1);
         },
     }
     sounds.push(sound)
+    heightMap[x][y] = amp;
 }
 
 init();
@@ -50,7 +55,7 @@ init();
 animate();
 function init() {
     scene = new THREE.Scene();
-    // scene.background = new THREE.Color( 0xcccccc );
+    scene.background = new THREE.Color( 0xcccccc );
     // scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -70,7 +75,7 @@ function init() {
     controls.maxPolarAngle = Math.PI / 2;
 
     // Create test sound
-    createSound(0, 0, 100);
+    createSound(50, 50, 100);
 
     // Plane
     soundsPlaneGeometry = new THREE.PlaneGeometry(1000, 1000, heightMapDim - 1, heightMapDim - 1);
@@ -89,7 +94,7 @@ function init() {
     soundsPlane = new THREE.Mesh( soundsPlaneGeometry, soundsPlaneMaterial );
     // soundsPlane.matrixAutoUpdate = false;
     scene.add(soundsPlane);
-    soundsPlane.rotation.x = Math.PI/2;
+    soundsPlane.rotation.x = -Math.PI/2;
 
     // world
     // var geometry = new THREE.CylinderBufferGeometry( 0, 10, 30, 4, 1 );
@@ -130,7 +135,7 @@ function updateSounds() {
     });
 }
 
-function updateMesh() {
+function updateMesh(time) {
     // console.log('e');
     scene.remove(soundsPlane);
     soundsPlane.geometry.dispose();
@@ -142,6 +147,22 @@ function updateMesh() {
     //     // soundsPlaneGeometry.__dirtyVertices = true;
     // }
     // soundsPlane.updateMatrix();
+
+    for (var i = 0; i < heightMapDim; i++) {
+        for (var j = 0; j < heightMapDim; j++) {
+            heightMap[i][j] = 0;
+            sounds.forEach(function(sound) {
+                // if (!(i == sound.y && j == sound.x)) heightMap[i][j] += sound.amp*Math.pow(Math.E, -Math.sqrt((sound.x - j)*(sound.x - j) + (sound.y - i)*(sound.y - i)));
+                heightMap[i][j] += sound.amp*Math.cos(sound.time)*Math.pow(Math.E, -Math.sqrt((sound.x - j)*(sound.x - j) + (sound.y - i)*(sound.y - i)));
+                // heightMap[i][j] += 1/Math.sqrt((sound.x - j)*(sound.x - j) + (sound.y - i)*(sound.y - i));
+            });
+        }
+    }
+
+    // console.log(heightMap);
+    // console.log(heightMap[50][50]);
+
+
     soundsPlaneGeometry = new THREE.PlaneGeometry(1000, 1000, heightMapDim - 1, heightMapDim - 1);
     soundsPlaneMaterial = new THREE.MeshBasicMaterial({
         color: 0x333333,
@@ -151,31 +172,40 @@ function updateMesh() {
     // var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
     for (var i = 0; i < soundsPlaneGeometry.vertices.length; i++) {
         // console.log('e')
-        soundsPlaneGeometry.vertices[i].z = randomInt(100);
+        var row = Math.floor(i/heightMapDim);
+        var column = (i+1) - row*heightMapDim - 1;
+        // if (row >= 100) console.log(row, column);
+        // if (column >= 100) console.log(row, column);
+        // console.log(row, column)
+        // if (typeof heightMap[row][column] === undefined) console.log(row, column);
+        soundsPlaneGeometry.vertices[i].z = heightMap[row][column];
+        // soundsPlaneGeometry.vertices[i].z = randomInt(100);
         // soundsPlaneGeometry.__dirtyVertices = true;
     }
+
+    // console.log(soundsPlaneGeometry.vertices)
     
     soundsPlane = new THREE.Mesh( soundsPlaneGeometry, soundsPlaneMaterial );
     // soundsPlane.matrixAutoUpdate = false;
     scene.add(soundsPlane);
-    soundsPlane.rotation.x = Math.PI/2;
+    soundsPlane.rotation.x = -Math.PI/2;
 }
 
 function animate() {
-    lightMain.position.x = Math.cos(time);
+    // lightMain.position.x = Math.cos(time);
     requestAnimationFrame( animate );
     controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
     render();
     updateSounds();
     // console.log(mapUpdateTime, Math.ceil(mapUpdateTime) + 0.05, Math.ceil(mapUpdateTime) - 0.05, mapUpdateTime <= Math.ceil(mapUpdateTime) + 0.05, mapUpdateTime >= Math.ceil(mapUpdateTime) - 0.05)
     if (mapUpdateTime <= Math.ceil(mapUpdateTime) + 0.05 && mapUpdateTime >= Math.ceil(mapUpdateTime) - 0.05) {
-        updateMesh();
-        mapUpdateTime += 0.05;
+        updateMesh(time);
+        // mapUpdateTime += 0.05;
     }
-    time += 0.005;
-    mapUpdateTime += 0.005;
+    mapUpdateTime += 0.5;
     // console.log(mapUpdateTime);
     // console.log(time);
+    if (randomInt(100) > 90) createSound(randomInt(heightMapDim), randomInt(heightMapDim), randomInt(200));
 }
 
 function render() {
