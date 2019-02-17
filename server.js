@@ -32,7 +32,7 @@ app.post('/', function (req, res) {
     // console.log('they want the POST')
     // console.log('body: ' + JSON.stringify(req.body))
     // console.log('keyPressed: ' + req.body.keyPressed + ', keyDuration: ' + req.body.keyDuration + ', tempo: ' + req.body.tempo)
-    console.log('keyPressed: ' + req.body.keyPressed)
+    console.log('body: ' + JSON.stringify(req.body) + ', keyPressed: ' + req.body.keyPressed + ', keyDuration: ' + req.body.keyDuration)
     keyPressed = req.body.keyPressed
     keyDuration = req.body.keyDuration
     tempo = req.body.tempo

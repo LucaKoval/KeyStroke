@@ -233,7 +233,56 @@ function requestData() {
                 // if (data.split != undefined) {
                     keys.forEach(function(key) {
                         if (parseInt(key)) {
-                            createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * parseInt(key)/KEY_DIVISIONS), 100);
+                            switch (parseInt(key)) {
+                                case 1:
+                                    // note = 'E♭'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 11/KEY_DIVISIONS), 100);
+                                    break;
+                                case 2:
+                                    // note = 'C#'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 9/KEY_DIVISIONS), 100);
+                                    break;
+                                case 3:
+                                    // note = 'B♭'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 6/KEY_DIVISIONS), 100);
+                                    break;
+                                case 4:
+                                    // note = 'G#'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 4/KEY_DIVISIONS), 100);
+                                    break;
+                                case 5:
+                                    // note = 'F#'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 2/KEY_DIVISIONS), 100);
+                                    break;
+                                case 6:
+                                    // note = 'F'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 1/KEY_DIVISIONS), 100);
+                                    break;
+                                case 7:
+                                    // note = 'G'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 3/KEY_DIVISIONS), 100);
+                                    break;
+                                case 8:
+                                    // note = 'A'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 5/KEY_DIVISIONS), 100);
+                                    break;
+                                case 9:
+                                    // note = 'B'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 7/KEY_DIVISIONS), 100);
+                                    break;
+                                case 10:
+                                    // note = 'C'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 8/KEY_DIVISIONS), 100);
+                                    break;
+                                case 11:
+                                    // note = 'D'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 10/KEY_DIVISIONS), 100);
+                                    break;
+                                case 12:
+                                    // note = 'E'
+                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 12/KEY_DIVISIONS), 100);
+                                    break;
+                            }
                         }
                     });
                 // }
