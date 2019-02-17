@@ -9,6 +9,7 @@ var soundsPlaneMaterialTemplate = new THREE.MeshBasicMaterial({
         color: 0x333333,
         wireframe: true
     });
+var soundsPlaneColors = [];
 
 function randomInt(max) {
     return Math.floor(Math.random() * max);
@@ -84,6 +85,17 @@ function init() {
 
     // Sound plane initialization
     soundsPlaneGeometry = new THREE.PlaneGeometry(1000, 1000, heightMapDim - 1, heightMapDim - 1);
+    for (var i = 0; i < soundsPlaneGeometry.vertices.length; i++) {
+        // var row = Math.floor(i/heightMapDim);
+        // var column = (i+1) - row*heightMapDim - 1;
+        // var color = new THREE.Color("hsl(0, 100%, 50%)");
+        var color = new THREE.Color("rgb(255, 0, 0)");
+        soundsPlaneColors[i] = color;
+        // soundsPlaneGeometry.colors.push(new THREE.Color(0xFF0000));
+        // soundsPlaneGeometry.vertexColors.push(new THREE.Color(0xFF0000));
+        // soundsPlaneGeometry.vertexColors.push(new THREE.Color(0xFF0000)); 
+    }
+    soundsPlaneGeometry.colors = soundsPlaneColors;
     soundsPlaneMaterial = new THREE.MeshBasicMaterial({
         color: 0x333333,
         wireframe: true
@@ -98,7 +110,7 @@ function init() {
 
     lightMain = new THREE.DirectionalLight(0xffffff);
     lightMain.position.set(1, 1, 1);
-    scene.add( lightMain );
+    scene.add(lightMain);
     window.addEventListener( 'resize', onWindowResize, false );
 }
 
@@ -130,15 +142,42 @@ function updateMesh(time) {
     }
 
     soundsPlaneGeometry = new THREE.PlaneGeometry(1000, 1000, heightMapDim - 1, heightMapDim - 1);
-    soundsPlaneMaterial = soundsPlaneMaterialTemplate;
+    // soundsPlaneMaterial = soundsPlaneMaterialTemplate;
 
     for (var i = 0; i < soundsPlaneGeometry.vertices.length; i++) {
         var row = Math.floor(i/heightMapDim);
         var column = (i+1) - row*heightMapDim - 1;
         soundsPlaneGeometry.vertices[i].z = heightMap[row][column];
+
+        var rand = randomInt(255);
+
+        var color = new THREE.Color("rgb("+ rand +", 255, 255)");
+        soundsPlaneColors[i] = color;
     }
+
+    for (var i = 0; i < soundsPlaneGeometry.faces.length; i++) {
+        var face = soundsPlaneGeometry.faces[i];
+        face.color.setHex( Math.random() * 0xffffff );
+    }
+
+    // var mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors } );
+
+    // console.log(soundsPlaneMaterial.vertexColors);
+
+    // soundsPlaneMaterial = soundsPlaneMaterialTemplate;
+    soundsPlaneMaterial = new THREE.MeshBasicMaterial({
+        vertexColors: THREE.FaceColors,
+        // color: 0x333333,
+        wireframe: true
+    });
+
+    // soundsPlaneMaterial.vertexColors = soundsPlaneColors;
+
+    // soundsPlaneGeometry.colors = soundsPlaneColors;
+    // soundsPlaneGeometry.vertexColors = soundsPlaneColors;
+    // console.log(soundsPlaneGeometry.vertexColors);
     
-    soundsPlane = new THREE.Mesh( soundsPlaneGeometry, soundsPlaneMaterial );
+    soundsPlane = new THREE.Mesh(soundsPlaneGeometry, soundsPlaneMaterial);
     scene.add(soundsPlane);
     soundsPlane.rotation.x = -Math.PI/2;
 }
