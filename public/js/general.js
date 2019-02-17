@@ -48,3 +48,7 @@ $('.menu-icon').clickToggle(function() {
     $('.nav-right').css('display', 'none');
     navRightDisplayed = false;
 });
+
+$(window).on("load", function() {
+    $('.data-container').height($(window).height()-$('nav').height())
+});

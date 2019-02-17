@@ -29,9 +29,9 @@ app.get('/visuals', function (req, res) {
 
 /* Handle post requests */
 app.post('/', function (req, res) {
-    console.log('they want the POST')
+    // console.log('they want the POST')
     // console.log('body: ' + JSON.stringify(req.body))
-    console.log('keyPressed: ' + req.body.keyPressed)
+    console.log('keyPressed: ' + req.body.keyPressed + ', keyDuration: ' + req.body.keyDuration + ', tempo: ' + req.body.tempo)
     keyPressed = req.body.keyPressed
     keyDuration = req.body.keyDuration
     tempo = req.body.tempo
@@ -39,10 +39,10 @@ app.post('/', function (req, res) {
 })
 
 app.post('/update', function(req, res) {
-    console.log('they want the POST from update')
-    console.log('keyPressed: ' + keyPressed)
-    console.log('keyDuration: ' + keyDuration)
-    console.log('tempo: ' + tempo)
+    // console.log('they want the POST from update')
+    // console.log('keyPressed: ' + keyPressed)
+    // console.log('keyDuration: ' + keyDuration)
+    // console.log('tempo: ' + tempo)
     res.send({keyPressed: keyPressed, keyDuration: keyDuration, tempo: tempo})
 })
 
