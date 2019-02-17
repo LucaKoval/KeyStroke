@@ -100,10 +100,6 @@ function init() {
     materialDepth.uniforms['mNear'].value = camera.near;
     materialDepth.uniforms['mFar'].value = camera.far;
 
-    // Test sound
-    // createSound(Math.floor(heightMapDim/2), Math.floor(heightMapDim/2), 100);
-    // createSound(Math.floor(heightMapDim/4), Math.floor(heightMapDim/4), 100);
-
     // controls
     controls = new THREE.OrbitControls( camera, renderer.domElement );
     //controls.addEventListener('change', render); // call this only in static scenes (i.e., if there is no animation loop)
@@ -226,66 +222,62 @@ function requestData() {
         url: "http://localhost:8000/update",
         success: function (data) {
             if (!(!data.keyPressed || data.keyPressed == '' || data.keyPressed == ' ')) {
-                // console.log(data.split(' '))
-                var keys = data.keyPressed.split(' ');
-                // console.log(keys)
-                // var keys = []
-                // if (data.split != undefined) {
-                    keys.forEach(function(key) {
-                        if (parseInt(key)) {
-                            switch (parseInt(key)) {
-                                case 1:
-                                    // note = 'E♭'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 11/KEY_DIVISIONS), 100);
-                                    break;
-                                case 2:
-                                    // note = 'C#'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 9/KEY_DIVISIONS), 100);
-                                    break;
-                                case 3:
-                                    // note = 'B♭'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 6/KEY_DIVISIONS), 100);
-                                    break;
-                                case 4:
-                                    // note = 'G#'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 4/KEY_DIVISIONS), 100);
-                                    break;
-                                case 5:
-                                    // note = 'F#'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 2/KEY_DIVISIONS), 100);
-                                    break;
-                                case 6:
-                                    // note = 'F'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 1/KEY_DIVISIONS), 100);
-                                    break;
-                                case 7:
-                                    // note = 'G'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 3/KEY_DIVISIONS), 100);
-                                    break;
-                                case 8:
-                                    // note = 'A'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 5/KEY_DIVISIONS), 100);
-                                    break;
-                                case 9:
-                                    // note = 'B'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 7/KEY_DIVISIONS), 100);
-                                    break;
-                                case 10:
-                                    // note = 'C'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 8/KEY_DIVISIONS), 100);
-                                    break;
-                                case 11:
-                                    // note = 'D'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 10/KEY_DIVISIONS), 100);
-                                    break;
-                                case 12:
-                                    // note = 'E'
-                                    createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 12/KEY_DIVISIONS), 100);
-                                    break;
-                            }
+                var keys = data.keyPressed.trim().split(' ');
+                keys.forEach(function(key) {
+                    if (parseInt(key)) {
+                        switch (parseInt(key)) {
+                            case 1:
+                                // note = 'E♭'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 11/KEY_DIVISIONS), 100);
+                                break;
+                            case 2:
+                                // note = 'C#'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 9/KEY_DIVISIONS), 100);
+                                break;
+                            case 3:
+                                // note = 'B♭'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 6/KEY_DIVISIONS), 100);
+                                break;
+                            case 4:
+                                // note = 'G#'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 4/KEY_DIVISIONS), 100);
+                                break;
+                            case 5:
+                                // note = 'F#'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 2/KEY_DIVISIONS), 100);
+                                break;
+                            case 6:
+                                // note = 'F'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 1/KEY_DIVISIONS), 100);
+                                break;
+                            case 7:
+                                // note = 'G'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 3/KEY_DIVISIONS), 100);
+                                break;
+                            case 8:
+                                // note = 'A'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 5/KEY_DIVISIONS), 100);
+                                break;
+                            case 9:
+                                // note = 'B'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 7/KEY_DIVISIONS), 100);
+                                break;
+                            case 10:
+                                // note = 'C'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 8/KEY_DIVISIONS), 100);
+                                break;
+                            case 11:
+                                // note = 'D'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 10/KEY_DIVISIONS), 100);
+                                break;
+                            case 12:
+                                // note = 'E'
+                                createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * 12/KEY_DIVISIONS), 100);
+                                break;
                         }
-                    });
-                // }
+                    }
+                });
+                
             }
         },
         error: function (err) {
@@ -326,27 +318,9 @@ function updateMesh(time) {
 
     for (var i = 0; i < soundsPlaneGeometry.faces.length; i++) {
         var face = soundsPlaneGeometry.faces[i];
-        // if (Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight) {
-        //     face.vertexColors[0] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff);
-        // } else {
-        //     console.log('under')
-        //     face.vertexColors[0] = new THREE.Color(0x000000);
-        // }
-        // var = Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight ? new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff) : vnew THREE.Color(0x000000)
-        // face.vertexColors[0] = Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight ? new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff) : new THREE.Color(0xffffff)
-        // console.log(Math.abs(100*soundsPlaneGeometry.vertices[face.a].z)/heightMax)
         face.vertexColors[0] = Math.abs(soundsPlaneGeometry.vertices[face.a].z) >= minHeight ? new THREE.Color("hsl(29, 100, " + 100*Math.abs(soundsPlaneGeometry.vertices[face.a].z)/heightMax + ")") : new THREE.Color(0xffffff)
-        // cps
-        // face.vertexColors[0] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff);
-        // face.vertexColors[1] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.b].z)/10 * 0xffffff);
-        // face.vertexColors[2] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.c].z)/10 * 0xffffff);
-        // face.vertexColors[1] = Math.abs(soundsPlaneGeometry.vertices[face.b].z) >= minHeight ? new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.b].z)/10 * 0xffffff) : new THREE.Color(0xffffff)
-        // face.vertexColors[2] = Math.abs(soundsPlaneGeometry.vertices[face.c].z) >= minHeight ? new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.c].z)/10 * 0xffffff) : new THREE.Color(0xffffff)
         face.vertexColors[1] = Math.abs(soundsPlaneGeometry.vertices[face.b].z) >= minHeight ? new THREE.Color("hsl(29, 100, " + 100*Math.abs(soundsPlaneGeometry.vertices[face.b].z)/heightMax + ")") : new THREE.Color(0xffffff)
         face.vertexColors[2] = Math.abs(soundsPlaneGeometry.vertices[face.c].z) >= minHeight ? new THREE.Color("hsl(29, 100, " + 100*Math.abs(soundsPlaneGeometry.vertices[face.c].z)/heightMax + ")") : new THREE.Color(0xffffff)
-        // face.vertexColors[0] = new THREE.Color(0xffffff);
-        // face.vertexColors[1] = new THREE.Color(0xffffff);
-        // face.vertexColors[2] = new THREE.Color(0xffffff);
     }
 
     soundsPlaneMaterial = soundsPlaneMaterialTemplate;

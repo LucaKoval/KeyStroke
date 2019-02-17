@@ -12,7 +12,6 @@ function requestData() {
             if (!(!data.keyPressed || data.keyPressed == '' || data.keyPressed == ' ')) {
                 pressedPrev = pressedCurr
                 pressedCurr = true
-                // console.log('change ',pressedPrev == pressedCurr)
                 var keys = data.keyPressed.trim().split(' ')
                 var note = ''
                 console.log(keys)
