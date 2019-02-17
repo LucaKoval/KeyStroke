@@ -1,11 +1,14 @@
-// if ( WEBGL.isWebGLAvailable() === false ) {
-//     document.body.appendChild( WEBGL.getWebGLErrorMessage() );
-// }
+if (WEBGL.isWebGLAvailable() === false) {
+    document.body.appendChild( WEBGL.getWebGLErrorMessage() );
+}
 
 var camera, controls, scene, renderer;
-// var soundsPlane, soundsPlaneGeometry, lightMain;
 var lightMain;
 var soundsPlaneGeometry, soundsPlaneMaterial, soundsPlane;
+var soundsPlaneMaterialTemplate = new THREE.MeshBasicMaterial({
+        color: 0x333333,
+        wireframe: true
+    });
 
 function randomInt(max) {
     return Math.floor(Math.random() * max);
@@ -51,22 +54,24 @@ function createSound(x, y, amp) {
 }
 
 init();
-//render(); // remove when using next line for animation loop (requestAnimationFrame)
 animate();
+
 function init() {
     scene = new THREE.Scene();
-    scene.background = new THREE.Color( 0xcccccc );
-    // scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
+    scene.background = new THREE.Color(0xcccccc);
+    // scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
-    // document.body.appendChild( renderer.domElement );
+
     $('.body-container > .data-container > .row').append(renderer.domElement);
     camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
     camera.position.set( 400, 200, 0 );
+
     // controls
     controls = new THREE.OrbitControls( camera, renderer.domElement );
-    //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+    //controls.addEventListener('change', render); // call this only in static scenes (i.e., if there is no animation loop)
     controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
     controls.dampingFactor = 0.25;
     controls.screenSpacePanning = false;
@@ -77,48 +82,23 @@ function init() {
     // Create test sound
     createSound(50, 50, 100);
 
-    // Plane
+    // Sound plane initialization
     soundsPlaneGeometry = new THREE.PlaneGeometry(1000, 1000, heightMapDim - 1, heightMapDim - 1);
     soundsPlaneMaterial = new THREE.MeshBasicMaterial({
         color: 0x333333,
         wireframe: true
     });
-    // var geometry = new THREE.PlaneGeometry( 10000, 10000, 0 );
-    // var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
     for (var i = 0; i < soundsPlaneGeometry.vertices.length; i++) {
-        // console.log('e')
-        soundsPlaneGeometry.vertices[i].z = randomInt(100);
-        // soundsPlaneGeometry.__dirtyVertices = true;
+        soundsPlaneGeometry.vertices[i].z = 0;
     }
     
     soundsPlane = new THREE.Mesh( soundsPlaneGeometry, soundsPlaneMaterial );
-    // soundsPlane.matrixAutoUpdate = false;
     scene.add(soundsPlane);
     soundsPlane.rotation.x = -Math.PI/2;
 
-    // world
-    // var geometry = new THREE.CylinderBufferGeometry( 0, 10, 30, 4, 1 );
-    // var material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
-    // for ( var i = 0; i < 500; i ++ ) {
-    //     var mesh = new THREE.Mesh( geometry, material );
-    //     mesh.position.x = Math.random() * 1600 - 800;
-    //     mesh.position.y = 0;
-    //     mesh.position.z = Math.random() * 1600 - 800;
-    //     mesh.updateMatrix();
-    //     mesh.matrixAutoUpdate = false;
-    //     scene.add( mesh );
-    // }
-    // lights
-    // var light = new THREE.DirectionalLight( 0xffffff );
-    lightMain = new THREE.DirectionalLight( 0xffffff );
-    lightMain.position.set( 1, 1, 1 );
+    lightMain = new THREE.DirectionalLight(0xffffff);
+    lightMain.position.set(1, 1, 1);
     scene.add( lightMain );
-    var light = new THREE.DirectionalLight( 0x002288 );
-    light.position.set( - 1, - 1, - 1 );
-    // scene.add( light );
-    var light = new THREE.AmbientLight( 0x222222 );
-    // scene.add( light );
-    //
     window.addEventListener( 'resize', onWindowResize, false );
 }
 
@@ -136,249 +116,45 @@ function updateSounds() {
 }
 
 function updateMesh(time) {
-    // console.log('e');
     scene.remove(soundsPlane);
     soundsPlane.geometry.dispose();
     soundsPlane.material.dispose();
-    // // console.log('f')
-    // for (var i = 0; i < soundsPlaneGeometry.vertices.length; i++) {
-    //     // console.log('e')
-    //     soundsPlaneGeometry.vertices[i].z = randomInt(100);
-    //     // soundsPlaneGeometry.__dirtyVertices = true;
-    // }
-    // soundsPlane.updateMatrix();
 
     for (var i = 0; i < heightMapDim; i++) {
         for (var j = 0; j < heightMapDim; j++) {
             heightMap[i][j] = 0;
             sounds.forEach(function(sound) {
-                // if (!(i == sound.y && j == sound.x)) heightMap[i][j] += sound.amp*Math.pow(Math.E, -Math.sqrt((sound.x - j)*(sound.x - j) + (sound.y - i)*(sound.y - i)));
                 heightMap[i][j] += sound.amp*Math.cos(sound.time)*Math.pow(Math.E, -Math.sqrt((sound.x - j)*(sound.x - j) + (sound.y - i)*(sound.y - i)));
-                // heightMap[i][j] += 1/Math.sqrt((sound.x - j)*(sound.x - j) + (sound.y - i)*(sound.y - i));
             });
         }
     }
 
-    // console.log(heightMap);
-    // console.log(heightMap[50][50]);
-
-
     soundsPlaneGeometry = new THREE.PlaneGeometry(1000, 1000, heightMapDim - 1, heightMapDim - 1);
-    soundsPlaneMaterial = new THREE.MeshBasicMaterial({
-        color: 0x333333,
-        wireframe: true
-    });
-    // var geometry = new THREE.PlaneGeometry( 10000, 10000, 0 );
-    // var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
+    soundsPlaneMaterial = soundsPlaneMaterialTemplate;
+
     for (var i = 0; i < soundsPlaneGeometry.vertices.length; i++) {
-        // console.log('e')
         var row = Math.floor(i/heightMapDim);
         var column = (i+1) - row*heightMapDim - 1;
-        // if (row >= 100) console.log(row, column);
-        // if (column >= 100) console.log(row, column);
-        // console.log(row, column)
-        // if (typeof heightMap[row][column] === undefined) console.log(row, column);
         soundsPlaneGeometry.vertices[i].z = heightMap[row][column];
-        // soundsPlaneGeometry.vertices[i].z = randomInt(100);
-        // soundsPlaneGeometry.__dirtyVertices = true;
     }
-
-    // console.log(soundsPlaneGeometry.vertices)
     
     soundsPlane = new THREE.Mesh( soundsPlaneGeometry, soundsPlaneMaterial );
-    // soundsPlane.matrixAutoUpdate = false;
     scene.add(soundsPlane);
     soundsPlane.rotation.x = -Math.PI/2;
 }
 
 function animate() {
-    // lightMain.position.x = Math.cos(time);
     requestAnimationFrame( animate );
     controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
     render();
     updateSounds();
-    // console.log(mapUpdateTime, Math.ceil(mapUpdateTime) + 0.05, Math.ceil(mapUpdateTime) - 0.05, mapUpdateTime <= Math.ceil(mapUpdateTime) + 0.05, mapUpdateTime >= Math.ceil(mapUpdateTime) - 0.05)
     if (mapUpdateTime <= Math.ceil(mapUpdateTime) + 0.05 && mapUpdateTime >= Math.ceil(mapUpdateTime) - 0.05) {
         updateMesh(time);
-        // mapUpdateTime += 0.05;
     }
     mapUpdateTime += 0.5;
-    // console.log(mapUpdateTime);
-    // console.log(time);
     if (randomInt(100) > 90) createSound(randomInt(heightMapDim), randomInt(heightMapDim), randomInt(200));
 }
 
 function render() {
     renderer.render( scene, camera );
 }
-
-
-
-
-
-
-
-
-
-
-// var camera, scene, renderer;
-// var geometry, material, mesh;
-
-// init();
-// animate();
-
-// function init() {
-//     camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
-//     camera.position.z = 1;
-//     // camera.position.x = 0.5;
-//     // camera.position.y = 0;
-
-//     renderer = new THREE.WebGLRenderer({ antialias: true });
-//     renderer.setSize( window.innerWidth, window.innerHeight );
-//     $('.body-container > .data-container > .row').append(renderer.domElement);
-
-//     scene = new THREE.Scene();
-
-//     // var camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
-//     // camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
-
-//     var controls = new THREE.OrbitControls( camera );
-
-//     //controls.update() must be called after any manual changes to the camera's transform
-//     // camera.position.set( 0, 20, 100 );
-//     // controls.update();
-
-//     geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-//     material = new THREE.MeshNormalMaterial();
-
-//     mesh = new THREE.Mesh( geometry, material );
-//     scene.add(mesh);
-
-//     var geometry = new THREE.PlaneGeometry( 5, 20, 32 );
-//     var material = new THREE.MeshBasicMaterial( {color: 0xffff00, side: THREE.DoubleSide} );
-//     var plane = new THREE.Mesh( geometry, material );
-//     scene.add(plane);
-
-//     // mesh.rotation.x = Math.PI/4;
-//     // mesh.rotation.y = Math.PI/4;
-// }
-
-// function animate() {
-//     requestAnimationFrame( animate );
-
-
-//     // camera.position.x = radius * Math.cos( angle );
-//     // camera.position.z = radius * Math.sin( angle );
-//     // camera.position.y = radius * Math.sin( angle );
-//     // angle += 0.01;
-
-//     // mesh.rotation.x += 0.01;
-//     // mesh.rotation.y += 0.01;
-
-//     // required if controls.enableDamping or controls.autoRotate are set to true
-//     controls.update();
-
-//     renderer.render( scene, camera );
-// }
-
-
-
-
-// // Set body min-width
-// var bodyHalfWidth = $(window).outerWidth(true)/2;
-// document.body.style.minWidth = Math.max(1074,bodyHalfWidth);
-
-// var PIXEL_RATIO = (function () {
-//     var ctx = document.createElement("canvas").getContext("2d"),
-//         dpr = window.devicePixelRatio || 1,
-//         bsr = ctx.webkitBackingStorePixelRatio ||
-//               ctx.mozBackingStorePixelRatio ||
-//               ctx.msBackingStorePixelRatio ||
-//               ctx.oBackingStorePixelRatio ||
-//               ctx.backingStorePixelRatio || 1;
-
-//     return dpr / bsr;
-// })();
-
-// createHiDPICanvas = function(w, h, ratio) {
-//     if (!ratio) { ratio = PIXEL_RATIO; }
-//     var can = document.getElementById("initialCanvas");
-//     can.width = w * ratio;
-//     can.height = h * ratio;
-//     can.style.width = w + "px";
-//     can.style.height = h + "px";
-//     can.getContext("2d").setTransform(ratio, 0, 0, ratio, 0, 0);
-//     return can;
-// }
-
-// var RESOLUTIONVAR = 2;
-
-// var $navbarHeight = $('.body-container > nav').outerHeight();
-// var correctWindowHeight = window.innerHeight
-
-// window.addEventListener('resize', resizeCanvas, false);
-
-// var c;
-
-// var ctx;
-
-// var resizeCanvasCalled = false;
-
-// resizeCanvas();
-
-// var canvasHeight = correctWindowHeight - ($navbarHeight);
-
-// function resizeCanvas() {
-//     c = createHiDPICanvas(window.outerWidth, correctWindowHeight - ($navbarHeight), RESOLUTIONVAR);
-
-//     ctx = c.getContext("2d");
-    
-//     resizeCanvasCalled = true;
-// }
-
-// function getRandomInt(min, max) {
-//     min = Math.ceil(min)
-//     max = Math.floor(max)
-//     return Math.floor(Math.random() * (max - min + 1)) + min
-// }
-
-// let circles = []
-
-// function makeCircle(x, y) {
-//     var circle = {
-//         x: x,
-//         y: y,
-//         r: 100
-//     }
-
-//     circles.push(circle)
-// }
-
-// document.onclick = click
-// function click(e) {
-//     makeCircle(e.clientX, e.clientY)
-// }
-
-// function render() {
-//     requestAnimationFrame(render)
-
-//     ctx.clearRect(0, 0, c.width, c.height)
-
-//     ctx.fillStyle = 'afafaf'
-//     ctx.fillRect(0, 0, c.width, c.height)
-
-//     circles.forEach(function(circle) {
-//         ctx.beginPath();
-//         ctx.fillStyle = 'green';
-//         ctx.arc(circle.x, circle.y, circle.r, 0, 2 * Math.PI, false);
-//         ctx.fill();
-//     })
-
-//     // Object
-//     // ctx.beginPath();
-//     // ctx.fillStyle = 'green';
-//     // ctx.arc(object.x, object.y, object.r, 0, 2 * Math.PI, false);
-//     // ctx.fill();
-// }
-
-// requestAnimationFrame(render);
