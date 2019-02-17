@@ -13,29 +13,29 @@ app.use(express.static('public'));
 app.get('/index', function (req, res) {
     console.log('they want the GET: index')
     console.log('GET msg: ' + JSON.stringify(req.body))
-    res.render('pages/index', { keyPressed: body })
+    res.render('pages/index', { keyPressed: keyPressed })
 })
 
 app.get('/data', function (req, res) {
     console.log('they want the GET: data')
-    res.render('pages/data', { keyPressed: body })
+    res.render('pages/data', { keyPressed: keyPressed })
 })
 
 app.get('/visuals', function (req, res) {
     console.log('they want the GET: visuals')
-    res.render('pages/visuals', { keyPressed: body })
+    res.render('pages/visuals', { keyPressed: keyPressed })
 })
 
 /* Handle post requests */
 app.post('/', function (req, res) {
     console.log('they want the POST')
     console.log('keyPressed: ' + req.body.keyPressed)
-    keyPressed += JSON.stringify(req.body.keyPressed)
+    keyPressed = req.body.keyPressed
     res.send(req.body)
 })
 
 app.post('/update', function(req, res) {
-    res.send(body)
+    res.send(keyPressed)
 })
 
 

@@ -15,7 +15,7 @@ function zeros(dimensions) {
 var camera, controls, scene, renderer;
 var lightMain;
 var soundsPlaneGeometry, soundsPlaneMaterial, soundsPlane;
-var soundsPlaneMaterialTemplate = new THREE.MeshBasicMaterial({
+var soundsPlaneMaterialTemplate = new THREE.MeshLambertMaterial({
         vertexColors: THREE.VertexColors,
         wireframe: true
     });
@@ -83,7 +83,7 @@ function init() {
     controls.maxPolarAngle = Math.PI / 2;
 
     // Create test sound
-    createSound(50, 50, 100);
+    // createSound(50, 50, 100);
 
     // Sound plane initialization
     soundsPlaneGeometry = new THREE.PlaneGeometry(1000, 1000, heightMapDim - 1, heightMapDim - 1);
@@ -129,6 +129,42 @@ function updateSounds() {
     });
 }
 
+// var keyPressed = 0;
+
+const TOTAL_KEYS = 12;
+const KEY_DIVISIONS = TOTAL_KEYS + 1;
+
+function requestData() {
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8000/update",
+        success: function (data) {
+            // console.log('data: ' + data)
+            // $('#value').html("Key pressed: " + data)
+            // keyPressed = data;
+            if (!(!data || data == '' || data == ' ')) {
+                // createSound(Math.floor(heightMapDim/2), heightMapDim, 100);
+                var keys = data.split(' ');
+                console.log(keys);
+                keys.forEach(function(key) {
+                    if (parseInt(key)) createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * parseInt(key)/KEY_DIVISIONS), 100);
+                });
+            }
+            //  else {
+            //     createSound(Math.floor(heightMapDim/2), heightMapDim - Math.floor(heightMapDim * parseInt(data)/KEY_DIVISIONS), 100);
+            // }
+        },
+        error: function (err) {
+          console.log('Error: ' + err);
+        }
+    });
+}
+
+setInterval(function() {
+    requestData()
+}, 500)
+
+
 function updateMesh(time) {
     scene.remove(soundsPlane);
     soundsPlane.geometry.dispose();
@@ -138,7 +174,7 @@ function updateMesh(time) {
         for (var j = 0; j < heightMapDim; j++) {
             heightMap[i][j] = 0;
             sounds.forEach(function(sound) {
-                heightMap[i][j] += sound.amp*Math.cos(sound.time)*Math.pow(Math.E, -Math.sqrt((sound.x - j)*(sound.x - j) + (sound.y - i)*(sound.y - i)));
+                heightMap[i][j] += sound.amp*Math.cos(sound.time)*Math.pow(Math.E, -1*Math.sqrt((sound.x - j)*(sound.x - j) + (sound.y - i)*(sound.y - i)));
             });
         }
     }
@@ -158,9 +194,9 @@ function updateMesh(time) {
         var face = soundsPlaneGeometry.faces[i];
         // face.color.setHex( Math.random() * 0xffffff );
         // console.log(face.a);
-        face.vertexColors[0] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z) * 0xffffff);
-        face.vertexColors[1] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.b].z) * 0xffffff);
-        face.vertexColors[2] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.c].z) * 0xffffff);
+        face.vertexColors[0] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z)/10 * 0xffffff);
+        face.vertexColors[1] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.b].z)/10 * 0xffffff);
+        face.vertexColors[2] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.c].z)/10 * 0xffffff);
     }
 
     // var mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors } );
@@ -190,7 +226,9 @@ function animate() {
         updateMesh(time);
     }
     mapUpdateTime += 0.5;
-    if (randomInt(100) > 90) createSound(randomInt(heightMapDim), randomInt(heightMapDim), randomInt(200));
+    // if (randomInt(100) > 90) createSound(randomInt(heightMapDim), randomInt(heightMapDim), randomInt(200));
+
+
 }
 
 function render() {
