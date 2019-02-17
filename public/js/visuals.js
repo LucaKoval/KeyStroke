@@ -56,6 +56,14 @@ function createSound(x, y, amp) {
     heightMap[x][y] = amp;
 }
 
+var effectController, materialDepth;
+
+var postprocessing = { enabled: true };
+var shaderSettings = {
+    rings: 3,
+    samples: 4
+};
+
 init();
 animate();
 
@@ -64,17 +72,31 @@ function init() {
     scene.background = new THREE.Color(0xcccccc);
     // scene.fog = new THREE.FogExp2(0xcccccc, 0.0007);
 
+    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 1, 3000);
+    // camera.position.set(400, 200, 0);
+    camera.position.y = 200;
+    camera.position.z = 400;
+
     renderer = new THREE.WebGLRenderer( { antialias: true } );
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
-
+    renderer.autoClear = false;
     $('.body-container > .data-container > .row').append(renderer.domElement);
-    camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
-    camera.position.set(400, 200, 0);
+
+    var depthShader = THREE.BokehDepthShader;
+
+    materialDepth = new THREE.ShaderMaterial( {
+        uniforms: depthShader.uniforms,
+        vertexShader: depthShader.vertexShader,
+        fragmentShader: depthShader.fragmentShader
+    });
+
+    materialDepth.uniforms[ 'mNear' ].value = camera.near;
+    materialDepth.uniforms[ 'mFar' ].value = camera.far;
 
     // Test sound
-    // createSound(Math.floor(heightMapDim/2), Math.floor(heightMapDim/2), 100);
-    // createSound(Math.floor(heightMapDim/4), Math.floor(heightMapDim/4), 100);
+    createSound(Math.floor(heightMapDim/2), Math.floor(heightMapDim/2), 100);
+    createSound(Math.floor(heightMapDim/4), Math.floor(heightMapDim/4), 100);
 
     // controls
     controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -83,7 +105,7 @@ function init() {
     controls.dampingFactor = 0.25;
     controls.screenSpacePanning = false;
     controls.minDistance = 100;
-    controls.maxDistance = 500;
+    controls.maxDistance = 5000;
     controls.maxPolarAngle = Math.PI / 2;
 
     // Sound plane initialization
@@ -96,11 +118,88 @@ function init() {
     scene.add(soundsPlane);
     soundsPlane.rotation.x = -Math.PI/2;
 
-    var lightMain = new THREE.DirectionalLight(0xffffff, 2);
-    lightMain.position.set(1, 1, 1);
-    scene.add(lightMain);
+    // var lightMain = new THREE.DirectionalLight(0xffffff, 2);
+    // lightMain.position.set(1, 1, 1);
+    // scene.add(lightMain);
+
+    var directionalLight = new THREE.DirectionalLight( 0xffffff, 2 );
+    directionalLight.position.set( 2, 1.2, 10 ).normalize();
+    scene.add( directionalLight );
+    var directionalLight = new THREE.DirectionalLight( 0xffffff, 1 );
+    directionalLight.position.set( - 2, 1.2, - 10 ).normalize();
+    scene.add( directionalLight );
+
+    initPostprocessing();
+
+    effectController = {
+        enabled: true,
+        jsDepthCalculation: true,
+        shaderFocus: false,
+        fstop: 2.2,
+        maxblur: 0.5,
+        showFocus: false,
+        focalDepth: 20,
+        manualdof: false,
+        vignetting: true,
+        depthblur: false,
+        threshold: 0.5,
+        gain: 2.0,
+        bias: 0.5,
+        fringe: 0.7,
+        focalLength: 20,
+        noise: true,
+        pentagon: false,
+        dithering: 0.0001
+    };
+    var matChanger = function () {
+        for ( var e in effectController ) {
+            if ( e in postprocessing.bokeh_uniforms ) {
+                postprocessing.bokeh_uniforms[ e ].value = effectController[ e ];
+            }
+        }
+        postprocessing.enabled = effectController.enabled;
+        postprocessing.bokeh_uniforms[ 'znear' ].value = camera.near;
+        postprocessing.bokeh_uniforms[ 'zfar' ].value = camera.far;
+        camera.setFocalLength( effectController.focalLength );
+    };
+
+    matChanger();
 
     window.addEventListener('resize', onWindowResize, false);
+}
+
+function initPostprocessing() {
+    postprocessing.scene = new THREE.Scene();
+    postprocessing.camera = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, - 10000, 10000 );
+    postprocessing.camera.position.z = 100;
+    postprocessing.scene.add( postprocessing.camera );
+    var pars = { minFilter: THREE.LinearFilter, magFilter: THREE.LinearFilter, format: THREE.RGBFormat };
+    postprocessing.rtTextureDepth = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, pars );
+    postprocessing.rtTextureColor = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, pars );
+    var bokeh_shader = THREE.BokehShader;
+    postprocessing.bokeh_uniforms = THREE.UniformsUtils.clone( bokeh_shader.uniforms );
+    postprocessing.bokeh_uniforms[ 'tColor' ].value = postprocessing.rtTextureColor.texture;
+    postprocessing.bokeh_uniforms[ 'tDepth' ].value = postprocessing.rtTextureDepth.texture;
+    postprocessing.bokeh_uniforms[ 'textureWidth' ].value = window.innerWidth;
+    postprocessing.bokeh_uniforms[ 'textureHeight' ].value = window.innerHeight;
+    postprocessing.materialBokeh = new THREE.ShaderMaterial( {
+        uniforms: postprocessing.bokeh_uniforms,
+        vertexShader: bokeh_shader.vertexShader,
+        fragmentShader: bokeh_shader.fragmentShader,
+        defines: {
+            RINGS: shaderSettings.rings,
+            SAMPLES: shaderSettings.samples
+        }
+    } );
+    postprocessing.quad = new THREE.Mesh( new THREE.PlaneBufferGeometry( window.innerWidth, window.innerHeight ), postprocessing.materialBokeh );
+    postprocessing.quad.position.z = - 500;
+    postprocessing.scene.add( postprocessing.quad );
+}
+
+function shaderUpdate() {
+    postprocessing.materialBokeh.defines.RINGS = shaderSettings.rings;
+    postprocessing.materialBokeh.defines.SAMPLES = shaderSettings.samples;
+    postprocessing.materialBokeh.needsUpdate = true;
 }
 
 function onWindowResize() {
@@ -192,6 +291,32 @@ function animate() {
     mapUpdateTime += 0.5;
 }
 
+function linearize( depth ) {
+    var zfar = camera.far;
+    var znear = camera.near;
+    return - zfar * znear / ( depth * ( zfar - znear ) - zfar );
+}
+
+function smoothstep( near, far, depth ) {
+    var x = saturate( ( depth - near ) / ( far - near ) );
+    return x * x * ( 3 - 2 * x );
+}
+
 function render() {
-    renderer.render( scene, camera );
+    // renderer.render( scene, camera );
+    if ( postprocessing.enabled ) {
+        renderer.clear();
+        // render scene into texture
+        renderer.render( scene, camera, postprocessing.rtTextureColor, true );
+        // render depth into texture
+        scene.overrideMaterial = materialDepth;
+        renderer.render( scene, camera, postprocessing.rtTextureDepth, true );
+        scene.overrideMaterial = null;
+        // render bokeh composite
+        renderer.render( postprocessing.scene, postprocessing.camera );
+    } else {
+        scene.overrideMaterial = null;
+        renderer.clear();
+        renderer.render( scene, camera );
+    }
 }

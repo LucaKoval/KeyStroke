@@ -1,47 +1,63 @@
-// const http = require('http')
-// const port = 8000
+function requestData() {
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8000/update",
+        success: function (data) {
+            if (!(!data || data == '' || data == ' ')) {
+                var keys = data.split(' ')
+                keys.forEach(function(key) {
+                    $("#current-notes").children("p").remove()
+                    if (parseInt(key)) {
+                        var note = ''
+                        switch (parseInt(key)) {
+                            case 1:
+                                note = 'C'
+                                break;
+                            case 2:
+                                note = 'C#'
+                                break;
+                            case 3:
+                                note = 'D'
+                                break;
+                            case 4:
+                                note = 'E♭'
+                                break;
+                            case 5:
+                                note = 'E'
+                                break;
+                            case 6:
+                                note = 'F'
+                                break;
+                            case 7:
+                                note = 'F#'
+                                break;
+                            case 8:
+                                note = 'G'
+                                break;
+                            case 9:
+                                note = 'G#'
+                                break;
+                            case 10:
+                                note = 'A'
+                                break;
+                            case 11:
+                                note = 'B♭'
+                                break;
+                            case 12:
+                                note = 'B'
+                                break;
+                        }
+                        $("#current-notes").append("<p>"+note+"</p>")
+                    }
+                });
+            }
+        },
+        error: function (err) {
+          console.log('Error: ' + err)
+        }
+    });
+}
 
-// const requestHandler = (request, response) => {
-//     if (request) console.log('they want the request')
-//     if (request.method === 'GET') console.log('they want to GET')
-//     if (request.method === 'POST') {
-//         console.log('they want the POST')
-//         request.on('data', function(data) {
-//             console.log(data.toString())
-//         })
-//     }
-    
-//     console.log(request.url)
-//     response.end('Hello Node.js Server!')
-// }
-
-// const server = http.createServer(requestHandler)
-
-// server.listen(port, (err) => {
-//     if (err) {
-//         return console.log('something bad happened', err)
-//     }
-
-//     console.log(`server is listening on ${port}`)
-// })
-
-
-// const express = require('express')
-// const app = express()
-
-// app.get('/', function (req, res) {
-//     if (req) console.log('they want the request')
-//     if (req.method === 'GET') console.log('they want to GET')
-//     if (req.method === 'POST') {
-//         console.log('they want the POST')
-//         req.on('data', function(data) {
-//             console.log(data.toString())
-//         })
-//     }
-
-//     res.send('Hello World!')
-// })
-
-// app.listen(8000, function () {
-//     console.log('Example app listening on port 3000!')
-// })
+setInterval(function() {
+    requestData()
+}, 100)
