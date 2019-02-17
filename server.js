@@ -12,7 +12,6 @@ app.use(express.static('public'));
 /* For actually displaying the pages, including when you click on the navbar links. */
 app.get('/index', function (req, res) {
     console.log('they want the GET: index')
-    // res.render('pages/index', { body: body })
     console.log('GET msg: ' + JSON.stringify(req.body))
     res.render('pages/index', { msg: body })
 })
@@ -31,7 +30,7 @@ app.get('/visuals', function (req, res) {
 app.post('/', function (req, res) {
     console.log('they want the POST')
     console.log('msg: ' + req.body.msg)
-    body = JSON.stringify(req.body.msg)
+    body += JSON.stringify(req.body.msg)
     res.send(req.body)
 })
 
