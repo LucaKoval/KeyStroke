@@ -3,7 +3,7 @@ const bodyParser = require('body-parser')
 const request = require('request');
 const app = express()
 
-let body = ''
+let keyPressed = ''
 
 app.set('view engine', 'ejs')
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -13,24 +13,24 @@ app.use(express.static('public'));
 app.get('/index', function (req, res) {
     console.log('they want the GET: index')
     console.log('GET msg: ' + JSON.stringify(req.body))
-    res.render('pages/index', { msg: body })
+    res.render('pages/index', { keyPressed: body })
 })
 
 app.get('/data', function (req, res) {
     console.log('they want the GET: data')
-    res.render('pages/data', { msg: body })
+    res.render('pages/data', { keyPressed: body })
 })
 
 app.get('/visuals', function (req, res) {
     console.log('they want the GET: visuals')
-    res.render('pages/visuals', { msg: body })
+    res.render('pages/visuals', { keyPressed: body })
 })
 
 /* Handle post requests */
 app.post('/', function (req, res) {
     console.log('they want the POST')
-    console.log('msg: ' + req.body.msg)
-    body += JSON.stringify(req.body.msg)
+    console.log('keyPressed: ' + req.body.keyPressed)
+    keyPressed += JSON.stringify(req.body.keyPressed)
     res.send(req.body)
 })
 

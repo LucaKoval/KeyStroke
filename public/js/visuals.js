@@ -2,19 +2,6 @@ if (WEBGL.isWebGLAvailable() === false) {
     document.body.appendChild( WEBGL.getWebGLErrorMessage() );
 }
 
-var camera, controls, scene, renderer;
-var lightMain;
-var soundsPlaneGeometry, soundsPlaneMaterial, soundsPlane;
-var soundsPlaneMaterialTemplate = new THREE.MeshBasicMaterial({
-        color: 0x333333,
-        wireframe: true
-    });
-var soundsPlaneColors = [];
-
-function randomInt(max) {
-    return Math.floor(Math.random() * max);
-}
-
 function zeros(dimensions) {
     var array = [];
 
@@ -25,10 +12,25 @@ function zeros(dimensions) {
     return array;
 }
 
+var camera, controls, scene, renderer;
+var lightMain;
+var soundsPlaneGeometry, soundsPlaneMaterial, soundsPlane;
+var soundsPlaneMaterialTemplate = new THREE.MeshBasicMaterial({
+        vertexColors: THREE.VertexColors,
+        wireframe: true
+    });
+
 var time = 0;
 var mapUpdateTime = 0;
 var heightMapDim = 100;
 var heightMap = zeros([heightMapDim, heightMapDim]);
+
+var soundsPlaneColors = zeros([heightMapDim, heightMapDim]);
+
+
+function randomInt(max) {
+    return Math.floor(Math.random() * max);
+}
 
 var sounds = [];
 var numSoundsCreated = 0;
@@ -148,16 +150,17 @@ function updateMesh(time) {
         var row = Math.floor(i/heightMapDim);
         var column = (i+1) - row*heightMapDim - 1;
         soundsPlaneGeometry.vertices[i].z = heightMap[row][column];
-
-        var rand = randomInt(255);
-
-        var color = new THREE.Color("rgb("+ rand +", 255, 255)");
-        soundsPlaneColors[i] = color;
     }
+
+    // console.log(soundsPlaneGeometry.faces.length, soundsPlaneGeometry.vertices.length);
 
     for (var i = 0; i < soundsPlaneGeometry.faces.length; i++) {
         var face = soundsPlaneGeometry.faces[i];
-        face.color.setHex( Math.random() * 0xffffff );
+        // face.color.setHex( Math.random() * 0xffffff );
+        // console.log(face.a);
+        face.vertexColors[0] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.a].z) * 0xffffff);
+        face.vertexColors[1] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.b].z) * 0xffffff);
+        face.vertexColors[2] = new THREE.Color( Math.abs(soundsPlaneGeometry.vertices[face.c].z) * 0xffffff);
     }
 
     // var mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors } );
@@ -165,11 +168,7 @@ function updateMesh(time) {
     // console.log(soundsPlaneMaterial.vertexColors);
 
     // soundsPlaneMaterial = soundsPlaneMaterialTemplate;
-    soundsPlaneMaterial = new THREE.MeshBasicMaterial({
-        vertexColors: THREE.FaceColors,
-        // color: 0x333333,
-        wireframe: true
-    });
+    soundsPlaneMaterial = soundsPlaneMaterialTemplate;
 
     // soundsPlaneMaterial.vertexColors = soundsPlaneColors;
 

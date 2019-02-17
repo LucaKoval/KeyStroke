@@ -4,7 +4,7 @@ function requestData() {
         url: "http://localhost:8000/update",
         success: function (data) {
             console.log('data: ' + data)
-            $('#value').html("It's " + data)
+            $('#value').html("Key pressed: " + data)
         },
         error: function (err) {
           console.log('Error: ' + err);
